@@ -1,28 +1,23 @@
 from django.contrib import admin
 from django.urls import path, include
-from app_notification.views import NotificationViewSet, UsersViewSet
 
-# drf
-from rest_framework import routers
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
     TokenVerifyView,
 )
-router = routers.SimpleRouter()
-router.register(r'notifications', NotificationViewSet, basename='notifications')
-router.register(r'users', UsersViewSet, basename='users')
-
-# drf-spectacular
 from drf_spectacular.views import (
     SpectacularAPIView, 
     SpectacularRedocView, 
     SpectacularSwaggerView
 )
 
+# Routers
+from app_notification.api.urls import router as notification_router
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/', include(router.urls)),
+    path('api/v1/', include(notification_router.urls)),
     # drf-spectacular
     path('api/doc/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),

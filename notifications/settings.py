@@ -30,11 +30,15 @@ INSTALLED_APPS = [
     'app_notification',
     # drf
     'rest_framework',
-    'drf_spectacular',
+    'rest_framework_api_key',
     'rest_framework_simplejwt',
+    'drf_spectacular',
+    # audit
+    'easyaudit',
 ]
 
 MIDDLEWARE = [
+    'easyaudit.middleware.easyaudit.EasyAuditMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -123,6 +127,10 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+        "rest_framework_api_key.permissions.HasAPIKey",
+    ],
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_THROTTLE_CLASSES': [
         'rest_framework.throttling.UserRateThrottle'
@@ -138,4 +146,5 @@ SPECTACULAR_SETTINGS = {
     'TITLE': 'API de Notificações',
     'DESCRIPTION': '',
     'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
 }
